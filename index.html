@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Task Planner</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #fdfbfb, #ebedee);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .input-section {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .input-section input {
+            flex: 1;
+            padding: 12px;
+            font-size: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .input-section input:focus {
+            border-color: #43c6ac;
+            outline: none;
+            box-shadow: 0 0 5px rgba(67, 198, 172, 0.5);
+        }
+
+        .input-section button {
+            padding: 12px 20px;
+            font-size: 1rem;
+            border: none;
+            background: #43c6ac;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .input-section button:hover {
+            background: #3ba592;
+        }
+
+        .planner {
+            display: grid;
+            grid-template-columns: 1fr 4fr 1fr;
+            row-gap: 10px;
+            align-items: center;
+        }
+
+        .time-slot {
+            font-weight: bold;
+        }
+
+        .task {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            background: #f9f9f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .task button {
+            background: #ff5c5c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .task button:hover {
+            background: #e04b4b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Daily Task Planner</h1>
+        <div class="input-section">
+            <input type="time" id="timeInput" placeholder="Time">
+            <input type="text" id="taskInput" placeholder="Task Description">
+            <button onclick="addTask()">Add Task</button>
+        </div>
+        <div class="planner" id="planner"></div>
+    </div>
+
+    <script>
+        const planner = document.getElementById('planner');
+
+        function addTask() {
+            const timeInput = document.getElementById('timeInput');
+            const taskInput = document.getElementById('taskInput');
+
+            if (!timeInput.value || taskInput.value.trim() === '') {
+                alert('Please enter both time and task!');
+                return;
+            }
+
+            const timeSlot = document.createElement('div');
+            timeSlot.className = 'time-slot';
+            timeSlot.textContent = timeInput.value;
+
+            const task = document.createElement('div');
+            task.className = 'task';
+            task.innerHTML = `
+                <span>${taskInput.value}</span>
+                <button onclick="deleteTask(this)">Delete</button>
+            `;
+
+            const spacer = document.createElement('div');
+
+            planner.appendChild(timeSlot);
+            planner.appendChild(task);
+            planner.appendChild(spacer);
+
+            timeInput.value = '';
+            taskInput.value = '';
+        }
+
+        function deleteTask(button) {
+            const task = button.parentElement;
+            const timeSlot = task.previousElementSibling;
+            const spacer = task.nextElementSibling;
+
+            timeSlot.remove();
+            task.remove();
+            spacer.remove();
+        }
+    </script>
+</body>
+</html>
+
+                

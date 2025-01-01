@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flag Matching Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f0f0f5;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .flag {
+      width: 100px;
+      height: 60px;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+    .flag:hover {
+      border-color: #4CAF50;
+    }
+    #score {
+      font-size: 20px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Match the Country to its Flag</h2>
+  <p id="question"></p>
+  <div id="flags"></div>
+  <p id="score">Score: 0</p>
+
+  <script>
+    const countries = [
+      { name: "France", flag: "https://flagcdn.com/fr.svg" },
+      { name: "Japan", flag: "https://flagcdn.com/jp.svg" },
+      { name: "Brazil", flag: "https://flagcdn.com/br.svg" },
+      { name: "Australia", flag: "https://flagcdn.com/au.svg" }
+    ];
+
+    let score = 0;
+    const questionEl = document.getElementById("question");
+    const flagsContainer = document.getElementById("flags");
+    const scoreEl = document.getElementById("score");
+
+    function loadQuestion() {
+      const randomCountry = countries[Math.floor(Math.random() * countries.length)];
+      questionEl.textContent = `Which is the flag of ${randomCountry.name}?`;
+
+      flagsContainer.innerHTML = "";
+      countries.sort(() => 0.5 - Math.random()).forEach(country => {
+        const img = document.createElement("img");
+        img.src = country.flag;
+        img.classList.add("flag");
+        img.onclick = () => checkAnswer(country, randomCountry);
+        flagsContainer.appendChild(img);
+      });
+    }
+
+    function checkAnswer(selectedCountry, correctCountry) {
+      if (selectedCountry.name === correctCountry.name) {
+        score++;
+        alert("Correct!");
+      } else {
+        alert("Wrong! Try again.");
+      }
+      scoreEl.textContent = `Score: ${score}`;
+      loadQuestion();
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>

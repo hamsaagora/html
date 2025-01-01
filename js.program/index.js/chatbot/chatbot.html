@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enhanced Travel Chatbot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f5;
+      margin: 0;
+    }
+    #chatbotContainer {
+      width: 350px;
+      height: 600px;
+      border: 2px solid #333;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      background-color: #ffffff;
+    }
+    #chatbotHeader {
+      background-color: #4CAF50;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }
+    #chatbotMessages {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .message {
+      margin: 5px 0;
+      padding: 10px;
+      border-radius: 10px;
+      max-width: 80%;
+    }
+    .userMessage {
+      align-self: flex-end;
+      background-color: #d1e7dd;
+    }
+    .botMessage {
+      align-self: flex-start;
+      background-color: #f8d7da;
+    }
+    #chatbotInputContainer {
+      display: flex;
+      border-top: 1px solid #ddd;
+    }
+    #chatbotInput {
+      flex: 1;
+      padding: 15px;
+      border: none;
+      border-bottom-left-radius: 8px;
+    }
+    #sendButton {
+      padding: 15px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-bottom-right-radius: 8px;
+      cursor: pointer;
+    }
+    #sendButton:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div id="chatbotContainer">
+    <div id="chatbotHeader">Enhanced Travel Chatbot</div>
+    <div id="chatbotMessages"></div>
+    <div id="chatbotInputContainer">
+      <input type="text" id="chatbotInput" placeholder="Ask me anything about travel...">
+      <button id="sendButton" onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const messagesContainer = document.getElementById("chatbotMessages");
+
+    function appendMessage(content, type) {
+      const messageElement = document.createElement("div");
+      messageElement.classList.add("message", type === "user" ? "userMessage" : "botMessage");
+      messageElement.textContent = content;
+      messagesContainer.appendChild(messageElement);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    function getBotResponse(input) {
+      input = input.toLowerCase();
+
+      // Define responses for different categories
+      const responses = {
+        greetings: ["Hello! How can I help with your travel plans today?", "Hi there! Ready for a travel adventure? How can I assist?"],
+        destination_recommendation: [
+          "I recommend Bali for its beaches and temples, or Italy for art and food lovers. Where are you interested in traveling?",
+          "For a nature escape, try New Zealand. For culture and history, consider Japan!",
+        ],
+        visa_info: [
+          "Visa requirements vary by country. Could you tell me your nationality and destination?",
+          "I’d be happy to help with visa info! Please specify the countries involved.",
+        ],
+        packing_tips: [
+          "For a smooth trip, pack essentials like a universal adapter, first-aid kit, and light clothing. Would you like tips for a specific destination?",
+          "My packing tip: roll your clothes to save space and bring a portable charger!",
+        ],
+        seasonal_travel: [
+          "The best time to visit Japan is during cherry blossom season (March-April) or autumn (September-November).",
+          "Summer is perfect for European destinations like Greece and Italy, while winter is ideal for skiing in Switzerland.",
+        ],
+        travel_safety: [
+          "Always keep your belongings secure, stay aware of your surroundings, and check travel advisories.",
+          "Stay safe by learning basic local phrases, using official transport, and avoiding isolated areas at night.",
+        ],
+        farewells: ["Safe travels! Let me know if you have any more questions.", "thanks for visiting our hs travel site"],
+        unknown: ["I'm not sure about that. Could you ask about destinations, travel tips, or other common travel topics?"]
+      };
+
+      // Determine response category based on input
+      if (input.includes("hello") || input.includes("hi")) {
+        return randomResponse(responses.greetings);
+      } else if (input.includes("recommend a destination")) {
+        return randomResponse(responses.destination_recommendation);
+      } else if (input.includes("visa requirements") || input.includes("visa info")) {
+        return randomResponse(responses.visa_info);
+      } else if (input.includes("packing tips") || input.includes("what should i pack")) {
+        return randomResponse(responses.packing_tips);
+      } else if (input.includes("best time to visit") || input.includes("seasonal travel")) {
+        return randomResponse(responses.seasonal_travel);
+      } else if (input.includes("travel safety") || input.includes("stay safe")) {
+        return randomResponse(responses.travel_safety);
+      } else if (input.includes("thank you") || input.includes("thanks")) {
+        return randomResponse(responses.farewells);
+      } else {
+        return randomResponse(responses.unknown);
+      }
+    }
+
+    function randomResponse(responseArray) {
+      return responseArray[Math.floor(Math.random() * responseArray.length)];
+    }
+
+    function sendMessage() {
+      const input = document.getElementById("chatbotInput").value;
+      if (!input) return;
+
+      appendMessage(input, "user");
+      document.getElementById("chatbotInput").value = "";
+
+      setTimeout(() => {
+        const response = getBotResponse(input);
+        appendMessage(response, "bot");
+      }, 500);
+    }
+
+    // Enter key support
+    document.getElementById("chatbotInput").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+        sendMessage();
+      }
+    });
+  </script>
+</body>
+</html>
